@@ -1,0 +1,205 @@
+﻿<Window x:Class="VehicleSelectorApp.MainWindow"      
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VehicleSelectorApp"
+        mc:Ignorable="d"
+        Title="VehicleSelection" Height="800" Width="1000">
+    <Window.Resources>
+        <local:DataService x:Key="DataService" />
+        <local:ByteArrayToImageConverter x:Key="ByteArrayToImageConverter" />
+    </Window.Resources>
+    <TabControl>
+        <TabItem Header="Пошук машин">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="176*"/>
+                    <RowDefinition Height="13*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="95*" />
+                    <ColumnDefinition Width="38*"/>
+                    <ColumnDefinition Width="198*"/>
+                    <ColumnDefinition Width="663*" />
+                </Grid.ColumnDefinitions>
+                <GroupBox Header="Пошук машин" Margin="10,10,10,10" Grid.ColumnSpan="3" Grid.RowSpan="2">
+                    <Grid Margin="0,0,-2,0" Background="#FFFBFBFB">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Марка:" Grid.Row="0" Grid.Column="0" Margin="5" />
+                        <TextBox x:Name="BrandTextBox" Grid.Row="0" Grid.Column="1" Margin="5" />
+                        <Label Content="Модель:" Grid.Row="1" Grid.Column="0" Margin="5" />
+                        <TextBox x:Name="ModelTextBox" Grid.Row="1" Grid.Column="1" Margin="5" />
+                        <Label Content="Рік:" Grid.Row="2" Grid.Column="0" Margin="5" />
+                        <TextBox x:Name="YearTextBox" Grid.Row="2" Grid.Column="1" Margin="5" />
+                        <Label Content="Ціна:" Grid.Row="3" Grid.Column="0" Margin="5" />
+                        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="5">
+                            <TextBox x:Name="MinPriceTextBox" Width="89" Margin="0 0 5 0" />
+                            <Label Content="-" Margin="0 0 5 0" />
+                            <TextBox x:Name="MaxPriceTextBox" Width="94" />
+                        </StackPanel>
+                        <Label Content="Колір:" Grid.Row="4" Grid.Column="0" Margin="5" />
+                        <TextBox x:Name="ColorTextBox" Grid.Row="4" Grid.Column="1" Margin="5" />
+                        <Label Content="Пробіг:" Grid.Row="5" Grid.Column="0" Margin="5" />
+                        <TextBox x:Name="MileageTextBox" Grid.Row="5" Grid.Column="1" Margin="5" />
+                        <Label Content="Стан:" Grid.Row="6" Grid.Column="0" Margin="5" />
+                        <TextBox x:Name="ConditionTextBox" Grid.Row="6" Grid.Column="1" Margin="5" />
+                        <Label Content="Тип" Grid.Row="7" Grid.Column="0" Margin="5" />
+                        <TextBox x:Name="TypeTextBox" Grid.Row="7" Grid.Column="1" Margin="5" />
+                        <Button x:Name="SearchCarsButton" Content="Пошук" Margin="5,50,10,-38" Click="SearchCarsButton_Click" Grid.Row="7" Grid.Column="1" Cursor="Hand" />
+                        <Label Content="Натисніть &quot;Пошук&quot; для відображення списку машин&#xA;" Grid.Row="7" Margin="0,79,-8,-101" Foreground="#FFA9A8A8" Grid.ColumnSpan="2" />
+                    </Grid>
+                </GroupBox>
+                <ListView x:Name="CarsListView" Margin="10,10,10,10" ItemsSource="{Binding}" Grid.Column="3" Background="#F2F2F2" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="CarsListView_MouseDoubleClick" Grid.RowSpan="2">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderThickness="1" BorderBrush="White" Margin="5" Padding="5" Background="White" Width="{Binding ActualWidth, ElementName=CarsListView}" Cursor="Hand">
+                                <Grid Height="189" Margin="-6,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="1" Margin="0 0 0 10">
+                                        <TextBlock Text="{Binding brand}" FontWeight="Bold" FontSize="18" />
+                                        <TextBlock Text="{Binding model}" Margin="0 5 0 0" FontSize="16" />
+                                        <TextBlock Text="{Binding year}" Margin="0 5 0 0" FontSize="16" />
+                                        <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                                            <TextBlock Text="{Binding price}" Margin="0 0 5 0" FontSize="16" Foreground="Green" />
+                                            <TextBlock Text="₴" FontSize="16" />
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding color}" Margin="0 5 0 0" FontSize="16" />
+                                        <TextBlock Text="{Binding mileage}" Margin="0 5 0 0" FontSize="16" />
+                                        <TextBlock Text="{Binding condition}" Margin="0 5 0 0" FontSize="16" />
+                                        <TextBlock Text="{Binding type}" Margin="0 5 0 0" FontSize="16" />
+                                    </StackPanel>
+                                    <Image Source="{Binding Image.image1, Converter={StaticResource ByteArrayToImageConverter}}" Width="150" Height="150" Margin="0 0 10 0" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+                <Grid x:Name="CarDetailsGrid" Grid.Column="3" Margin="10,10,10,10" Visibility="Collapsed" Grid.RowSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name="CarNameTextBlock" FontSize="24" FontWeight="Bold" Margin="0 0 0 10" />
+                    <Image x:Name="CarImage" Grid.Row="1" Width="300" Height="200" Margin="0 10 0 0" />
+                    <TextBlock x:Name="CarPriceTextBlock" Grid.Row="2" FontSize="16" Margin="0 10 0 0" />
+                    <ScrollViewer Grid.Row="3">
+                        <TextBlock x:Name="CarDescriptionTextBlock" FontSize="16" TextWrapping="Wrap" />
+                    </ScrollViewer>
+                    <Button x:Name="BackButton" Grid.Row="4" Content="Повернутися назад" Margin="0 10 0 0" Click="BackButton_Click" Cursor="Hand" />
+                </Grid>
+                <Image x:Name="logotype" HorizontalAlignment="Center" Height="69" Margin="0,652,0,0" VerticalAlignment="Top" Width="296" Source="/Logotype/logo.png" Grid.ColumnSpan="3" OpacityMask="#FFD4A6A6" Grid.RowSpan="2">
+                    <Image.Effect>
+                        <DropShadowEffect/>
+                    </Image.Effect>
+                </Image>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Пошук комплектуючих">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="53*" />
+                    <ColumnDefinition Width="278*"/>
+                    <ColumnDefinition Width="663*" />
+                </Grid.ColumnDefinitions>
+                <GroupBox Header="Пошук комплектуючих" Margin="10,10,5,10" Grid.ColumnSpan="2">
+                    <Grid Margin="0,0,-2,0" Background="#FFFBFBFB">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Назва:" Grid.Row="0" Grid.Column="0" Margin="5" />
+                        <TextBox x:Name="PartNameTextBox" Grid.Row="0" Grid.Column="1" Margin="5" />
+                        <Label Content="Ціна:" Grid.Row="3" Grid.Column="0" Margin="5" />
+                        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="5,5,21,5">
+                            <TextBox x:Name="MinPricePartsTextBox" Width="64" Margin="0 0 5 0" />
+                            <Label Content="-" Width="16" RenderTransformOrigin="0.5,0.5" >
+                                <Label.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform AngleX="-0.512"/>
+                                        <RotateTransform/>
+                                        <TranslateTransform X="0.116"/>
+                                    </TransformGroup>
+                                </Label.RenderTransform>
+                            </Label>
+                            <TextBox x:Name="MaxPricePartsTextBox" Width="69" />
+                        </StackPanel>
+                        <Label Content="Модель машини:" Grid.Row="4" Grid.Column="0" Margin="5" />
+                        <TextBox x:Name="DescriptionTextBox" Grid.Row="4" Grid.Column="2" Margin="5" />
+                        <Button x:Name="SearchPartsButton" Content="Пошук" Margin="5,20,10,-8" Click="SearchPartsButton_Click" Grid.Row="7" Grid.Column="1" Cursor="Hand" />
+                        <Label Content="Натисніть &quot;Пошук&quot; для відображення списку комплектуючих" Grid.Row="7" Margin="0,45,-6,-67" Foreground="#FFA9A8A8" Grid.ColumnSpan="2" FontSize="10.5" />
+                    </Grid>
+                </GroupBox>
+                <ListView x:Name="PartsListView" Margin="10,10,10,10" ItemsSource="{Binding}" Grid.Column="2" Background="#F2F2F2" d:ItemsSource="{d:SampleData ItemCount=5}" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderThickness="1" BorderBrush="White" Margin="5" Padding="5" Background="White" Width="{Binding ActualWidth, ElementName=PartsListView}" Cursor="Hand">
+                                <Grid Height="189" Margin="-6,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="1" Margin="0 0 0 10">
+                                        <TextBlock Text="{Binding name}" FontWeight="Bold" FontSize="18" />
+                                        <TextBlock Text="{Binding description}" Margin="0 5 0 0" FontSize="16" />
+                                        <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                                            <TextBlock Text="{Binding price}" Margin="0 0 5 0" FontSize="16" Foreground="Green" />
+                                            <TextBlock Text="₴" FontSize="16" />
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding compatible_with}" Margin="0 5 0 0" FontSize="16" />
+                                    </StackPanel>
+                                    <Image Source="{Binding PartImage.image, Converter={StaticResource ByteArrayToImageConverter}}" Width="150" Height="150" Margin="0 0 10 0" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+                <Image x:Name="logotype_Copy" HorizontalAlignment="Center" Height="69" Margin="0,652,0,0" VerticalAlignment="Top" Width="300" Source="/Logotype/logo.png" Grid.ColumnSpan="2" OpacityMask="#FFD4A6A6">
+                    <Image.Effect>
+                        <DropShadowEffect/>
+                    </Image.Effect>
+                </Image>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Window>
